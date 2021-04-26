@@ -1,7 +1,10 @@
 import numpy as np
 from numbers import Integral
 
-from sklearn.externals import six
+#from sklearn.externals import six
+import six
+import sys
+sys.modules['sklearn.externals.six'] = six
 from sklearn.tree.export import _color_brew, _criterion, _tree
 
 
@@ -20,7 +23,7 @@ def plot_tree(decision_tree, max_depth=None, feature_names=None,
     >>> iris = load_iris()
 
     >>> clf = clf.fit(iris.data, iris.target)
-    >>> plot_tree(clf)                
+    >>> plot_tree(clf)
 
     """
     exporter = _MPLTreeExporter(
@@ -135,7 +138,7 @@ class _BaseTreeExporter(object):
             value_text = value.astype(int)
         else:
             value_text = np.around(value, self.precision)
-        
+
         value_text = str(value_text.astype('S32')).replace("b'", "'")
         value_text = value_text.replace("' '", ", ").replace("'", "")
         if tree.n_classes[0] == 1 and tree.n_outputs == 1:
@@ -143,7 +146,7 @@ class _BaseTreeExporter(object):
         value_text = value_text.replace("\n ", characters[4])
         node_string += value_text + characters[4]
 
-       
+
         if (self.class_names is not None and
                 tree.n_classes[0] != 1 and
                 tree.n_outputs == 1):
